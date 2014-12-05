@@ -79,6 +79,10 @@ public  class ForecastFragment extends Fragment {
                 "Sat - Sunny - 76/68"
         };
 
+
+
+
+
         List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
 
         //Possible alternative
@@ -104,6 +108,8 @@ public  class ForecastFragment extends Fragment {
                         //Data
                         weekForecast);
 
+        //Automatically fetch current information (Addition by Andrew, not tutorial)
+        new FetchWeatherTask().execute("75077");
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
