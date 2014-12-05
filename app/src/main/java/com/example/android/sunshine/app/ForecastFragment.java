@@ -1,5 +1,7 @@
 package com.example.android.sunshine.app;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +74,7 @@ public  class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //Initialize the fake data for listview
-        String[] forecastArray = {
+        final String[] forecastArray = {
                 "Today - Sunny - 88/63",
                 "Tomorrow - Foggy - 70/46",
                 "Weds - Cloudy - 72/63",
@@ -83,7 +87,7 @@ public  class ForecastFragment extends Fragment {
 
 
 
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
+        final List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
 
         //Possible alternative
             /*ArrayList weekForecast = new ArrayList();
@@ -116,6 +120,27 @@ public  class ForecastFragment extends Fragment {
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            //Create a new intent, opening the DetailActivity page, and passing it EXTRA_TEXT, which == forecast
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                //Context context = getActivity();
+                //CharSequence text = parent.getAdapter().getItem(position).toString();
+                //int duration = Toast.LENGTH_SHORT;
+                //Toast toast = Toast.makeText(context, text, duration);
+
+                String forecast = mForecastAdapter.getItem(position);
+                Toast toast = Toast.makeText(getActivity(), parent.getAdapter().getItem(position).toString(), Toast.LENGTH_SHORT);
+                toast.show();
+
+                //Create a new intent, opening the DetailActivity page, and passing it EXTRA_TEXT, which == forecast
+                Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
 
