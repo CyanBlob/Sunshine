@@ -1,9 +1,13 @@
 package com.example.android.sunshine.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Andrew on 11/20/2014. Based on Udacity tutorial
@@ -55,14 +60,25 @@ public  class ForecastFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         inflater.inflate(R.menu.forecastfragment, menu);
+        //inflater.inflate(R.menu.menu_main, menu);
+        //inflater.inflate(R.menu.menu_detail, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
+        Log.v(FetchWeatherTask.class.getSimpleName(), "Item ID message: " + id);
         if (id == R.id.action_refresh) {
-            new FetchWeatherTask().execute("75077");
+            //Log.v(FetchWeatherTask.class.getSimpleName(), "Refresh button pressed");
+            updateWeather();
+            return true;
+        }
+        else if (id == R.id.action_settings){
+            //Create a new intent, opening the SettingsActivity page
+            Log.v(FetchWeatherTask.class.getSimpleName(), "Settings button pressed");
+            Intent intent = new Intent(getActivity(), SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -73,20 +89,20 @@ public  class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //Initialize the fake data for listview
-        final String[] forecastArray = {
+        /*final String[] forecastArray = {
                 "Today - Sunny - 88/63",
                 "Tomorrow - Foggy - 70/46",
                 "Weds - Cloudy - 72/63",
                 "Thurs - Rainy - 64/51",
                 "Fri - Foggy - 70/46",
                 "Sat - Sunny - 76/68"
-        };
+        };*/
 
 
 
 
 
-        final List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
+        //final List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
 
         //Possible alternative
             /*ArrayList weekForecast = new ArrayList();
@@ -109,10 +125,7 @@ public  class ForecastFragment extends Fragment {
                         //ID of the textview to populate
                         R.id.list_item_forecast_textview,
                         //Data
-                        weekForecast);
-
-        //Automatically fetch current information (Addition by Andrew, not tutorial)
-        new FetchWeatherTask().execute("75077");
+                        new ArrayList<String>());
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -225,6 +238,24 @@ public  class ForecastFragment extends Fragment {
         //for (String a; resultStrs)
          //   Log.v(LOG_TAG, "Forecast Entry: " + a);
         return resultStrs;
+    }
+
+
+    private void updateWeather()
+    {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = sharedPref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+
+        new FetchWeatherTask().execute(location);
+
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        updateWeather();
     }
 
 
