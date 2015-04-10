@@ -3,19 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditTextPreference
-        android:key="@string/pref_location_key"
-        android:title="@string/pref_location_label"
-        android:defaultValue="@string/pref_location_default"
-        android:inputType="text"
-        android:singleLine="true"/>
-    <ListPreference
-        android:title="@string/pref_units_label"
-        android:key="@string/pref_units_key"
-        android:defaultValue="@string/pref_units_metric"
-        android:entryValues="@array/pref_units_value"
-        android:entries="@array/pref_units_options"/>
-        <!--TODO: Fill with stuff for the units preference option-->
+    <PreferenceCategory
+        android:title="@string/settings_header_general"
+        android:key="pref_key_storage_settings">
+        <EditTextPreference
+            android:key="@string/pref_location_key"
+            android:title="@string/pref_location_label"
+            android:defaultValue="@string/pref_location_default"
+            android:inputType="text"
+            android:singleLine="true"/>
+        <ListPreference
+            android:title="@string/pref_units_label"
+            android:key="@string/pref_units_key"
+            android:defaultValue="@string/pref_units_metric"
+            android:entryValues="@array/pref_units_value"
+            android:entries="@array/pref_units_options"/>
+        <ListPreference
+            android:title="@string/pref_days_label"
+            android:key="@string/pref_days_key"
+            android:defaultValue="@string/pref_days_7"
+            android:entryValues="@array/pref_days_value"
+            android:entries="@array/pref_days_options"/>
+    </PreferenceCategory>
 
 
 </PreferenceScreen>

@@ -3,6 +3,7 @@ package com.example.android.sunshine.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +22,11 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new ForecastFragment())
                     .commit();
         }
+
+        //Assign the default settings values the first time the app is opened. Setting the third
+        //argument to 'false' makes it only run if it has never run before. Setting it to 'true'
+        //causes it to run every time the app is opened
+        PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
         Toast toast = Toast.makeText(this, "MainActivity", Toast.LENGTH_SHORT);
         toast.show();
     }

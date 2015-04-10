@@ -177,6 +177,8 @@ public  class ForecastFragment extends Fragment {
      */
     private String formatHighLows(double high, double low) {
 
+        String LOG_TAG = "formatHighLows";
+
         //Store a reference to the shared preferences
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences((getActivity()));
@@ -192,7 +194,7 @@ public  class ForecastFragment extends Fragment {
         else if (!unitType.equals(getString((R.string.pref_units_metric))))
         {
             //TODO: Figure out why LOG_TAG is not in this scope
-            //Log.d(LOG_TAG, "Unity type not found: " + unitTyp);
+            Log.d(LOG_TAG, "Unit type not found: " + unitType);
         }
 
         // For presentation, assume the user doesn't care about tenths of a degree.
@@ -255,7 +257,7 @@ public  class ForecastFragment extends Fragment {
         }
 
         //for (String a; resultStrs)
-         //   Log.v(LOG_TAG, "Forecast Entry: " + a);
+        //   Log.v(LOG_TAG, "Forecast Entry: " + a);
         return resultStrs;
     }
 
@@ -266,8 +268,8 @@ public  class ForecastFragment extends Fragment {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = sharedPref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
 
-        Toast toast = Toast.makeText(this.getActivity(), location, Toast.LENGTH_SHORT);
-        toast.show();
+        //Toast toast = Toast.makeText(this.getActivity(), location, Toast.LENGTH_SHORT);
+        //toast.show();
         //String location = sharedPref.getString(getString(R.string.pref_location_key),"55555");
 
         new FetchWeatherTask().execute(location);
@@ -284,9 +286,13 @@ public  class ForecastFragment extends Fragment {
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>
     {
-        int numDays = 7;
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String days = sharedPref.getString(getString(R.string.pref_days_key),getString(R.string.pref_days_7));
+
+        int numDays = Integer.parseInt(days);
         String[] JSONStr = new String[numDays];
 
+        //This returns the name of the class (for some reason) and assigns that as the LOG_TAG, which is used to identify where log messages come from
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
         @Override
         protected String[] doInBackground(String... params)
@@ -305,7 +311,6 @@ public  class ForecastFragment extends Fragment {
             String units = "metric";
             //Log.v(LOG_TAG,toString(R.string.pref_units_default));
             //String units = getString(R.string.pref_units_default);
-            int numDays = 7;
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -403,6 +408,7 @@ public  class ForecastFragment extends Fragment {
        // }
 
         @Override
+        //After fetching the data, clear and update the forecast adapter
         protected void onPostExecute(String[] result)
         {
             if (result != null)

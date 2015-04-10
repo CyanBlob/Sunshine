@@ -17,8 +17,10 @@ public final class R {
         public static final int abc_slide_out_top=0x7f040005;
     }
     public static final class array {
-        public static final int pref_units_options=0x7f060000;
-        public static final int pref_units_value=0x7f060001;
+        public static final int pref_days_options=0x7f060000;
+        public static final int pref_days_value=0x7f060001;
+        public static final int pref_units_options=0x7f060002;
+        public static final int pref_units_value=0x7f060003;
     }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -1437,15 +1439,20 @@ containing a value of this type.
         public static final int action_settings=0x7f0c0011;
         public static final int app_name=0x7f0c0012;
         public static final int hello_world=0x7f0c0013;
-        public static final int pref_location_default=0x7f0c0014;
-        public static final int pref_location_key=0x7f0c0015;
-        public static final int pref_location_label=0x7f0c0016;
-        public static final int pref_units_imperial=0x7f0c0017;
-        public static final int pref_units_key=0x7f0c0018;
-        public static final int pref_units_label=0x7f0c0019;
-        public static final int pref_units_metric=0x7f0c001a;
-        public static final int title_activity_detail=0x7f0c001b;
-        public static final int title_activity_settings=0x7f0c001c;
+        public static final int pref_days_5=0x7f0c0014;
+        public static final int pref_days_7=0x7f0c0015;
+        public static final int pref_days_key=0x7f0c0016;
+        public static final int pref_days_label=0x7f0c0017;
+        public static final int pref_location_default=0x7f0c0018;
+        public static final int pref_location_key=0x7f0c0019;
+        public static final int pref_location_label=0x7f0c001a;
+        public static final int pref_units_imperial=0x7f0c001b;
+        public static final int pref_units_key=0x7f0c001c;
+        public static final int pref_units_label=0x7f0c001d;
+        public static final int pref_units_metric=0x7f0c001e;
+        public static final int settings_header_general=0x7f0c001f;
+        public static final int title_activity_detail=0x7f0c0020;
+        public static final int title_activity_settings=0x7f0c0021;
     }
     public static final class style {
         /**  Customize your theme here. 
