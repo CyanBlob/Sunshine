@@ -176,6 +176,25 @@ public  class ForecastFragment extends Fragment {
      * Prepare the weather high/lows for presentation.
      */
     private String formatHighLows(double high, double low) {
+
+        //Store a reference to the shared preferences
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences((getActivity()));
+        //Save the unit type from the shared preferences
+        String unitType = sharedPrefs.getString(
+                getString(R.string.pref_units_key),
+                getString(R.string.pref_units_metric));
+        if (unitType.equals(getString((R.string.pref_units_imperial))))
+        {
+            high = (high * 1.8) + 32;
+            low = (low * 1.8) + 32;
+        }
+        else if (!unitType.equals(getString((R.string.pref_units_metric))))
+        {
+            //TODO: Figure out why LOG_TAG is not in this scope
+            //Log.d(LOG_TAG, "Unity type not found: " + unitTyp);
+        }
+
         // For presentation, assume the user doesn't care about tenths of a degree.
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
@@ -247,6 +266,10 @@ public  class ForecastFragment extends Fragment {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = sharedPref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
 
+        Toast toast = Toast.makeText(this.getActivity(), location, Toast.LENGTH_SHORT);
+        toast.show();
+        //String location = sharedPref.getString(getString(R.string.pref_location_key),"55555");
+
         new FetchWeatherTask().execute(location);
 
     }
@@ -279,7 +302,9 @@ public  class ForecastFragment extends Fragment {
             String forecastJsonStr = null;
 
             String format = "json";
-            String units = "imperial";
+            String units = "metric";
+            //Log.v(LOG_TAG,toString(R.string.pref_units_default));
+            //String units = getString(R.string.pref_units_default);
             int numDays = 7;
 
             try {

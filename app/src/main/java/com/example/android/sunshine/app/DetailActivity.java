@@ -25,6 +25,8 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+        Toast toast = Toast.makeText(this, "DetailActivity", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
 
