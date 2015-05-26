@@ -1,6 +1,12 @@
 package com.example.android.sunshine.app;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -10,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +26,26 @@ public class DetailActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences((this));
+        //Save the unit type from the shared preferences
+        /*String theme = sharedPrefs.getString(getString(R.string.pref_theme_key),"");
+        if (theme.equals("light"))
+        {
+            //getActionBar().setTitle("TEST");
+            //ActionBar actionBar;
+            //actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#879f38")));
+
+            this.setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
+            //int titleId = getResources().getIdentifier("action_bar_title", "id", "android");
+            //TextView abTitle = (TextView) findViewById(titleId);
+            //abTitle.setTextColor(getResources().getColor(R.color.myColor));
+        }
+        else if (theme.equals("dark"))
+        {
+            this.setTheme(android.R.style.Theme_DeviceDefault_NoActionBar);
+        }*/
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
@@ -50,6 +78,17 @@ public class DetailActivity extends ActionBarActivity {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
+        }
+
+        //TODO
+        if (id == R.id.action_map){
+            Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Map button pressed");
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            //intent.setData(geoLocation);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

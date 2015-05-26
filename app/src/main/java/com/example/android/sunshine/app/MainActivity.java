@@ -1,7 +1,7 @@
 package com.example.android.sunshine.app;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -15,7 +15,23 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences((this));
+        //Save the unit type from the shared preferences
+        /*String theme = sharedPrefs.getString(getString(R.string.pref_theme_key),"");
+        if (theme.equals("light"))
+        {
+            this.setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
+
+        }
+        else if (theme.equals("dark"))
+        {
+            this.setTheme(android.R.style.Theme_DeviceDefault_NoActionBar);
+        }*/
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -50,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Settings button pressed");
             Intent intent = new Intent(this, SettingsActivity.class);
+            Intent intent2 = new Intent(this, MainActivity.class);
             startActivity(intent);
             return true;
         }

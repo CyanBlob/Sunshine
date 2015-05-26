@@ -2,8 +2,7 @@ package com.example.android.sunshine.app;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -33,9 +33,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -51,7 +49,22 @@ public  class ForecastFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences((getActivity()));
+        //Save the unit type from the shared preferences
+        /*String theme = sharedPrefs.getString(getString(R.string.pref_theme_key),"");
+        if (theme.equals("light"))
+        {
+            this.getActivity().setTheme(android.R.style.Theme_DeviceDefault_Light_NoActionBar);
+
+        }
+        else if (theme.equals("dark"))
+        {
+            this.getActivity().setTheme(android.R.style.Theme_DeviceDefault_NoActionBar);
+        }*/
+
         super.onCreate(savedInstanceState);
+
         //So the fragment can handle menu events
         setHasOptionsMenu(true);
     }
@@ -117,7 +130,7 @@ public  class ForecastFragment extends Fragment {
 
         //Create an ArrayAdapter which will take data and use it to populate the listview it is attached to
         mForecastAdapter =
-                new ArrayAdapter<String>(
+                new ArrayAdapter<>(     //<string> is implied here
                         //Current context
                         getActivity(),
                         //ID of list item layout
@@ -168,7 +181,9 @@ public  class ForecastFragment extends Fragment {
         // Because the API returns a unix timestamp (measured in seconds),
         // it must be converted to milliseconds in order to be converted to valid date.
         Date date = new Date(time * 1000);
-        SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
+
+        //TODO: Implement a setting to change locale
+        SimpleDateFormat format = new SimpleDateFormat("E, MMM d", Locale.US);
         return format.format(date);
     }
 
@@ -264,9 +279,10 @@ public  class ForecastFragment extends Fragment {
 
     private void updateWeather()
     {
-        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        new FetchWeatherTask();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location = sharedPref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        //String location = sharedPref.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+        String location = sharedPref.getString(getString(R.string.pref_location_key),"");
 
         //Toast toast = Toast.makeText(this.getActivity(), location, Toast.LENGTH_SHORT);
         //toast.show();
@@ -287,13 +303,16 @@ public  class ForecastFragment extends Fragment {
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>
     {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String days = sharedPref.getString(getString(R.string.pref_days_key),getString(R.string.pref_days_7));
+        //String days = sharedPref.getString(getString(R.string.pref_days_key),getString(R.string.pref_days_7));
+        String days = sharedPref.getString(getString(R.string.pref_days_key),"");
+
+        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         int numDays = Integer.parseInt(days);
         String[] JSONStr = new String[numDays];
 
         //This returns the name of the class (for some reason) and assigns that as the LOG_TAG, which is used to identify where log messages come from
-        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+
         @Override
         protected String[] doInBackground(String... params)
         {
