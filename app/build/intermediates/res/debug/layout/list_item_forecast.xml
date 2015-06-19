@@ -7,4 +7,4 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:id="@+id/list_item_forecast_textview"
     android:text="Test">
-</TextView><!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/src/main/res/layout/list_item_forecast.xml -->
+</TextView><!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/src/main/res/layout/list_item_forecast.xml -->

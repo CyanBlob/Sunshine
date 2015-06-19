@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string-array name="pref_days_options">
         <item>1</item>
@@ -44,7 +44,7 @@
         <item>metric</item>
         <item>imperial</item>
     </string-array>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/res/values/values.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
@@ -89,10 +89,10 @@
     <color name="material_blue_grey_950">#ff21272b</color>
     <color name="material_deep_teal_200">#ff80cbc4</color>
     <color name="material_deep_teal_500">#ff009688</color>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <color name="myColor">#00cc00</color>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/res/values/values.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/res/values/values.xml -->
     <eat-comment/>
     <color name="primary_dark_material_dark">#ff000000</color>
     <color name="primary_dark_material_light">#ff757575</color>
@@ -170,11 +170,11 @@
     <dimen name="abc_text_size_subtitle_material_toolbar">16dp</dimen>
     <dimen name="abc_text_size_title_material">20sp</dimen>
     <dimen name="abc_text_size_title_material_toolbar">20dp</dimen>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/res/values/values.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/res/values/values.xml -->
     <eat-comment/>
     <item name="dialog_fixed_height_major" type="dimen">80%</item>
     <item name="dialog_fixed_height_minor" type="dimen">100%</item>
@@ -208,7 +208,7 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_map">Map</string>
     <string name="action_refresh">Refresh</string>
@@ -233,12 +233,12 @@
     <string name="settings_header_general">general</string>
     <string name="title_activity_detail">Details</string>
     <string name="title_activity_settings">Settings</string>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
-    <!-- From: file:/C:/Users/Andrew/AndroidStudioProjects/Sunshine/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/res/values/values.xml -->
+    <!-- From: file:/C:/Android%20Studio%20Projects/Sunshine/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.2/res/values/values.xml -->
     <eat-comment/>
     <style name="Base.TextAppearance.AppCompat" parent="android:TextAppearance">
         <item name="android:textColor">?android:textColorPrimary</item>

@@ -39,7 +39,7 @@ import java.util.Locale;
 /**
  * Created by Andrew on 11/20/2014. Based on Udacity tutorial
  */
-public  class ForecastFragment extends Fragment {
+public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
 

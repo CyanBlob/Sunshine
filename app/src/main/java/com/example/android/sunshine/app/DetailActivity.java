@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,8 @@ public class DetailActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences((this));
+        String zip = sharedPrefs.getString(getString(R.string.pref_location_key), "");
+
         //Save the unit type from the shared preferences
         /*String theme = sharedPrefs.getString(getString(R.string.pref_theme_key),"");
         if (theme.equals("light"))
@@ -57,11 +60,18 @@ public class DetailActivity extends ActionBarActivity {
         toast.show();
     }
 
+    public void showMap(Uri geoLocation) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
@@ -80,15 +90,22 @@ public class DetailActivity extends ActionBarActivity {
                 return true;
         }
 
-        //TODO
-        if (id == R.id.action_map){
+        else if (id == R.id.action_map){
+            //TODO URI: http://maps.googleapis.com/maps/api/geocode/json?components=postal_code:23456&sensor=false
             Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Map button pressed");
-            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
+            showMap(gmmIntentUri);
+            return true;
+            /*Intent intent = new Intent(Intent.ACTION_VIEW);
             //intent.setData(geoLocation);
             if (intent.resolveActivity(getPackageManager()) != null) {
                 startActivity(intent);
             }
-            return true;
+            return true;*/
+
+
+
+
         }
 
         return super.onOptionsItemSelected(item);
