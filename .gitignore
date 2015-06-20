@@ -20,6 +20,8 @@ $RECYCLE.BIN/
 #Temp folders
 build
 \build
+app\build
+\app\build
 
 # =========================
 # Operating System Files

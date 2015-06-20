@@ -3,6 +3,7 @@ package com.example.android.sunshine.app;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -11,8 +12,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 
 public class MainActivity extends ActionBarActivity {
+
+    String LOG_TAG = ForecastFragment.FetchWeatherTask.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +60,6 @@ public class MainActivity extends ActionBarActivity {
         toast.show();
     }
 
-    public void showMap(Uri geoLocation) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -69,6 +73,7 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        String[] coords = new String[2];
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -84,74 +89,204 @@ public class MainActivity extends ActionBarActivity {
             SharedPreferences sharedPrefs =
                     PreferenceManager.getDefaultSharedPreferences((this));
             String zip = sharedPrefs.getString(getString(R.string.pref_location_key), "");
-            Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Map button pressed");
-            master.updateCoords(zip);
-            Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
-            showMap(gmmIntentUri);
-            /*Intent intent = new Intent(Intent.ACTION_VIEW);
-            //intent.setData(geoLocation);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            }
-            return true;*/
+            Log.v(LOG_TAG, "Map button pressed");
+            openPreferredLocationInMap(zip);
+
+
+            //Master master = new Master();
+            //master.updateCoords(zip);
+
+
 
         }
-
-
 
 
         return super.onOptionsItemSelected(item);
     }
 
-    /*private String[] getCoordFromZip(String zip)
-            throws JSONException
+    private void openPreferredLocationInMap(String zip)
     {
 
-        // These are the names of the JSON objects that need to be extracted.
-        final String OWM_LIST = "list";
-        final String OWM_WEATHER = "weather";
-        final String OWM_TEMPERATURE = "temp";
-        final String OWM_MAX = "max";
-        final String OWM_MIN = "min";
-        final String OWM_DATETIME = "dt";
-        final String OWM_DESCRIPTION = "main";
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q",zip)
+                .build();
 
-        JSONObject forecastJson = new JSONObject(forecastJsonStr);
-        JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
 
-        String[] resultStrs = new String[numDays];
-        for(int i = 0; i < weatherArray.length(); i++) {
-            // For now, using the format "Day, description, hi/low"
-            String day;
-            String description;
-            String highAndLow;
+        if(intent.resolveActivity(getPackageManager()) != null)
+        {
+            startActivity(intent);
+        }
+        else
+            Log.d(LOG_TAG, "Couldn't find a map app!");
+    }
 
-            // Get the JSON object representing the day
-            JSONObject dayForecast = weatherArray.getJSONObject(i);
+    //Long, convoluted way to open a map of the users location using AsyncTask to turn a zip into
+    //coordinates
 
-            // The date/time is returned as a long.  We need to convert that
-            // into something human-readable, since most people won't read "1400356800" as
-            // "this saturday".
-            long dateTime = dayForecast.getLong(OWM_DATETIME);
-            day = getReadableDateString(dateTime);
 
-            // description is in a child array called "weather", which is 1 element long.
-            JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
-            description = weatherObject.getString(OWM_DESCRIPTION);
+    /*public void showMap(Uri geoLocation) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }*/
 
-            // Temperatures are in a child object called "temp".  Try not to name variables
-            // "temp" when working with temperature.  It confuses everybody.
-            JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-            double high = temperatureObject.getDouble(OWM_MAX);
-            double low = temperatureObject.getDouble(OWM_MIN);
+    /*public class Master {
+        String[] coords = new String[2];
+        final String LOG_TAG = Master.class.getSimpleName();
 
-            highAndLow = formatHighLows(high, low);
-            resultStrs[i] = day + " - " + description + " - " + highAndLow;
+        class fetchCoordsTask extends AsyncTask<String,Void,String[]> {
+
+            private String[] getCoordsFromJson(String zipJsonStr)
+                    throws JSONException {
+
+                // These are the names of the JSON objects that need to be extracted.
+                final String OWM_RESULTS = "results";
+                final String OWM_GEOMETRY = "geometry";
+                final String OWM_LOCATION = "location";
+                final String OWM_LAT = "lat";
+                final String OWN_LNG = "lng";
+
+
+
+
+                JSONObject coordJson = new JSONObject(zipJsonStr).getJSONArray(OWM_RESULTS).getJSONObject(0).getJSONObject(OWM_GEOMETRY).getJSONObject(OWM_LOCATION);
+                String lat = coordJson.getString(OWM_LAT);
+                String lng = coordJson.getString(OWN_LNG);
+
+                coords[0] = lat;
+                coords[1] = lng;
+
+                Log.v(LOG_TAG,"RESULTS: Latitude: " + coords[0] + " Longitude: " + coords[1]);
+                //zipJson = zipJson.getJSONObject(OWN_LOCATION);
+
+                return coords;
+            }
+
+            @Override
+            protected String[] doInBackground(String... zip)
+            {
+
+                //final String LOG_TAG = master.class.getSimpleName();
+                //NETWORKING
+
+                // These two need to be declared outside the try/catch
+                // so that they can be closed in the finally block.
+                HttpURLConnection urlConnection = null;
+                BufferedReader reader = null;
+
+                // Will contain the raw JSON response as a string.
+                String zipJsonStr = null;
+
+                try {
+                    // Construct the URL for the OpenWeatherMap query
+                    // Possible parameters are available at OWM's forecast API page, at
+                    // http://openweathermap.org/API#forecast
+
+                    //TODO URI: http://maps.googleapis.com/maps/api/geocode/json?components=postal_code:23456&sensor=false
+
+                    final String BASE_URL = "" +
+                            "http://maps.googleapis.com/maps/api/geocode/json?components=postal_code:";
+
+
+                    final String END_URL = "&sensor=false";
+
+                    //Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                    //        .appendQueryParameter("75077",null)
+                    //        .appendQueryParameter("",END_URL)
+                    //        .build();
+                    StringBuilder builtUri = new StringBuilder();
+                    builtUri.append(BASE_URL).append(zip[0]).append(END_URL);
+
+                    //URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+                    URL url = new URL(builtUri.toString());
+                    Log.v(LOG_TAG, "Built URI: " + builtUri.toString());
+
+                    // Create the request to OpenWeatherMap, and open the connection
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.connect();
+
+                    // Read the input stream into a String
+                    InputStream inputStream = urlConnection.getInputStream();
+                    StringBuilder buffer = new StringBuilder();
+                    if (inputStream == null) {
+                        // Nothing to do.
+                        return null;
+                    }
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                        // But it does make debugging a *lot* easier if you print out the completed
+                        // buffer for debugging.
+                        buffer.append(line).append("\n");
+                    }
+
+                    if (buffer.length() == 0) {
+                        // Stream was empty.  No point in parsing.
+                        return null;
+                    }
+                    zipJsonStr = buffer.toString();
+
+                    Log.v(LOG_TAG, "Forecast JSON String" + zipJsonStr);
+                } catch (IOException e) {
+                    Log.e(LOG_TAG, "Error ", e);
+                    // If the code didn't successfully get the weather data, there's no point in attempting
+                    // to parse it.
+                    return null;
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                    if (reader != null) {
+                        try {
+                            reader.close();
+                        } catch (final IOException e) {
+                            Log.e(LOG_TAG, "Error closing stream", e);
+                        }
+                    }
+                }
+
+                try {
+                    //coordsLong = getCoordsFromJson(zipJsonStr);
+                    //Log.v(LOG_TAG, "Weather Data: " + JSONLong[0]);
+                    return getCoordsFromJson(zipJsonStr);
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG, e.getMessage(), e);
+                    e.printStackTrace();
+                }
+
+
+                return coords;
+
+
+            }
+
+
+            @Override
+            protected void onPostExecute(String[] coords)
+            {
+
+                StringBuilder geo = new StringBuilder();
+                geo.append("geo:").append(coords[0]).append(",").append(coords[1]);
+                Uri gmmIntentUri = Uri.parse(geo.toString());
+                MainActivity main = new MainActivity();
+                showMap((gmmIntentUri));
+
+            }
         }
 
-        //for (String a; resultStrs)
-        //   Log.v(LOG_TAG, "Forecast Entry: " + a);
-        return resultStrs;
+        public String[] updateCoords(String zip)
+        {
+            new fetchCoordsTask().execute(zip);
+            Log.v(LOG_TAG, "RETURNING: " + coords[0] + " " + coords[1]);
+            return coords;
+        }
     }*/
 
 }
