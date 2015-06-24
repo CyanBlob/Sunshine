@@ -6,10 +6,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.ActionProvider;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v7.widget.ShareActionProvider;
+//import android.widget.ShareActionProvider;
+import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -26,9 +31,12 @@ import java.net.URL;
 public class MainActivity extends ActionBarActivity {
 
     String LOG_TAG = ForecastFragment.FetchWeatherTask.class.getSimpleName();
+    //ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.v(LOG_TAG,"onCreate()");
 
         //Save the unit type from the shared preferences
         /*String theme = sharedPrefs.getString(getString(R.string.pref_theme_key),"");
@@ -64,11 +72,55 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+
+        /*MenuItem item = menu.findItem(R.id.action_share);
+
+        //mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        mShareActionProvider.setShareIntent(getShareIntent());
+        mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
+            @Override
+            public boolean onShareTargetSelected(ShareActionProvider actionProvider, Intent intent) {
+                Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Share button pressed");
+
+                //Uri mUri = Uri.parse("TEST");
+                //Intent intent2 = new Intent(Intent.ACTION_SEND);
+                //intent2.setData(mUri);
+                //intent2.setType("text/plain");
+                //intent2.putExtra("Data", "TEST");
+                startActivity(intent);
+                //mShareActionProvider.setShareIntent(intent2);
+                return false;
+            }
+        });*/
         return true;
     }
 
+    /*public Intent getShareIntent()
+    {
+        //Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Share button pressed");
+
+        Uri mUri = Uri.parse("TEST");
+        Intent intent2 = new Intent(Intent.ACTION_SEND);
+        intent2.setData(mUri);
+        intent2.setType("text/plain");
+        intent2.putExtra("Data", "TEST");
+
+        intent2.putExtra(android.content.Intent.EXTRA_SUBJECT, "My current weather!");
+        intent2.putExtra(android.content.Intent.EXTRA_TEXT, "Body here");
+
+
+        //startActivity(intent2);
+        //mShareActionProvider.setShareIntent(intent2);
+        return intent2;
+    }*/
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -79,8 +131,8 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Settings button pressed");
             Intent intent = new Intent(this, SettingsActivity.class);
-            Intent intent2 = new Intent(this, MainActivity.class);
             startActivity(intent);
+
             return true;
         }
 
@@ -90,15 +142,13 @@ public class MainActivity extends ActionBarActivity {
                     PreferenceManager.getDefaultSharedPreferences((this));
             String zip = sharedPrefs.getString(getString(R.string.pref_location_key), "");
             Log.v(LOG_TAG, "Map button pressed");
-            openPreferredLocationInMap(zip);
+            //openPreferredLocationInMap(zip);
 
-
-            //Master master = new Master();
-            //master.updateCoords(zip);
-
-
-
+            Master master = new Master();
+            master.updateCoords(zip);
         }
+
+
 
 
         return super.onOptionsItemSelected(item);
@@ -125,16 +175,16 @@ public class MainActivity extends ActionBarActivity {
     //Long, convoluted way to open a map of the users location using AsyncTask to turn a zip into
     //coordinates
 
-
-    /*public void showMap(Uri geoLocation) {
+    public void showMap(Uri geoLocation) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(geoLocation);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
-    }*/
+    }
 
-    /*public class Master {
+    public class Master
+    {
         String[] coords = new String[2];
         final String LOG_TAG = Master.class.getSimpleName();
 
@@ -287,6 +337,37 @@ public class MainActivity extends ActionBarActivity {
             Log.v(LOG_TAG, "RETURNING: " + coords[0] + " " + coords[1]);
             return coords;
         }
-    }*/
+    }
+
+    @Override
+    protected void onPause()
+    {
+        Log.v(LOG_TAG,"onPause()");
+        super.onPause();
+    }
+    @Override
+    protected void onStop()
+    {
+        Log.v(LOG_TAG,"onStop()");
+        super.onStop();
+    }
+    @Override
+    protected void onResume()
+    {
+        Log.v(LOG_TAG,"onResume()");
+        super.onResume();
+    }
+    @Override
+    protected void onStart()
+    {
+        Log.v(LOG_TAG,"onStart()");
+        super.onStart();
+    }
+    @Override
+    protected void onDestroy()
+    {
+        Log.v(LOG_TAG,"onDestroy()");
+        super.onResume();
+    }
 
 }

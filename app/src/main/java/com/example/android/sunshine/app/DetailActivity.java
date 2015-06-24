@@ -8,9 +8,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +26,9 @@ import android.widget.Toast;
 
 
 public class DetailActivity extends ActionBarActivity {
+
+    public static String forecastStr;
+    ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,49 @@ public class DetailActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
+
+        MenuItem item = menu.findItem(R.id.action_share);
+
+        //mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        mShareActionProvider.setShareIntent(getShareIntent());
+        mShareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener() {
+            @Override
+            public boolean onShareTargetSelected(ShareActionProvider actionProvider, Intent intent) {
+                Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Share button pressed");
+
+                //Uri mUri = Uri.parse("TEST");
+                //Intent intent2 = new Intent(Intent.ACTION_SEND);
+                //intent2.setData(mUri);
+                //intent2.setType("text/plain");
+                //intent2.putExtra("Data", "TEST");
+                startActivity(intent);
+                //mShareActionProvider.setShareIntent(intent2);
+                return false;
+            }
+        });
+
         return true;
+    }
+
+    public Intent getShareIntent()
+    {
+        //Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Share button pressed");
+
+        Uri mUri = Uri.parse("TEST");
+        Intent intent2 = new Intent(Intent.ACTION_SEND);
+        intent2.setData(mUri);
+        intent2.setType("text/plain");
+
+        intent2.putExtra(android.content.Intent.EXTRA_SUBJECT, "My current weather!");
+        intent2.putExtra(android.content.Intent.EXTRA_TEXT, forecastStr + " #Sunshine App");
+        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+
+
+        //startActivity(intent2);
+        //mShareActionProvider.setShareIntent(intent2);
+        return intent2;
     }
 
     @Override
@@ -90,31 +137,14 @@ public class DetailActivity extends ActionBarActivity {
                 return true;
         }
 
-        else if (id == R.id.action_map){
-            //TODO URI: http://maps.googleapis.com/maps/api/geocode/json?components=postal_code:23456&sensor=false
-            Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Map button pressed");
-            Uri gmmIntentUri = Uri.parse("geo:37.7749,-122.4194");
-            showMap(gmmIntentUri);
-            return true;
-            /*Intent intent = new Intent(Intent.ACTION_VIEW);
-            //intent.setData(geoLocation);
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            }
-            return true;*/
-
-
-
-
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment
+    {
 
         public PlaceholderFragment() {
         }
@@ -128,7 +158,7 @@ public class DetailActivity extends ActionBarActivity {
 
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
-                String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
+                forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
                 Toast toast = Toast.makeText(this.getActivity(), "Intent Toast: " + forecastStr, Toast.LENGTH_SHORT);
                 toast.show();
                 ((TextView) rootView.findViewById(R.id.detail_text)).setText(forecastStr);

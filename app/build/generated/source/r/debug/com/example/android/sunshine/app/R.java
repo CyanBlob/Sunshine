@@ -1328,6 +1328,7 @@ containing a value of this type.
         public static final int action_mode_close_button=0x7f090020;
         public static final int action_refresh=0x7f090043;
         public static final int action_settings=0x7f090045;
+        public static final int action_share=0x7f090046;
         public static final int activity_chooser_view_content=0x7f090021;
         public static final int always=0x7f09000f;
         public static final int beginning=0x7f09000a;
@@ -1442,26 +1443,27 @@ containing a value of this type.
         public static final int action_map=0x7f0c0010;
         public static final int action_refresh=0x7f0c0011;
         public static final int action_settings=0x7f0c0012;
-        public static final int app_name=0x7f0c0013;
-        public static final int hello_world=0x7f0c0014;
-        public static final int pref_days_5=0x7f0c0015;
-        public static final int pref_days_7=0x7f0c0016;
-        public static final int pref_days_key=0x7f0c0017;
-        public static final int pref_days_label=0x7f0c0018;
-        public static final int pref_location_default=0x7f0c0019;
-        public static final int pref_location_key=0x7f0c001a;
-        public static final int pref_location_label=0x7f0c001b;
-        public static final int pref_theme_dark=0x7f0c001c;
-        public static final int pref_theme_key=0x7f0c001d;
-        public static final int pref_theme_label=0x7f0c001e;
-        public static final int pref_theme_light=0x7f0c001f;
-        public static final int pref_units_imperial=0x7f0c0020;
-        public static final int pref_units_key=0x7f0c0021;
-        public static final int pref_units_label=0x7f0c0022;
-        public static final int pref_units_metric=0x7f0c0023;
-        public static final int settings_header_general=0x7f0c0024;
-        public static final int title_activity_detail=0x7f0c0025;
-        public static final int title_activity_settings=0x7f0c0026;
+        public static final int action_share=0x7f0c0013;
+        public static final int app_name=0x7f0c0014;
+        public static final int hello_world=0x7f0c0015;
+        public static final int pref_days_5=0x7f0c0016;
+        public static final int pref_days_7=0x7f0c0017;
+        public static final int pref_days_key=0x7f0c0018;
+        public static final int pref_days_label=0x7f0c0019;
+        public static final int pref_location_default=0x7f0c001a;
+        public static final int pref_location_key=0x7f0c001b;
+        public static final int pref_location_label=0x7f0c001c;
+        public static final int pref_theme_dark=0x7f0c001d;
+        public static final int pref_theme_key=0x7f0c001e;
+        public static final int pref_theme_label=0x7f0c001f;
+        public static final int pref_theme_light=0x7f0c0020;
+        public static final int pref_units_imperial=0x7f0c0021;
+        public static final int pref_units_key=0x7f0c0022;
+        public static final int pref_units_label=0x7f0c0023;
+        public static final int pref_units_metric=0x7f0c0024;
+        public static final int settings_header_general=0x7f0c0025;
+        public static final int title_activity_detail=0x7f0c0026;
+        public static final int title_activity_settings=0x7f0c0027;
     }
     public static final class style {
         /**  Customize your theme here. 
