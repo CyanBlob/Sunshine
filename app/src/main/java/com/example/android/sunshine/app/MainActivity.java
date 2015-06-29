@@ -64,8 +64,8 @@ public class MainActivity extends ActionBarActivity {
         //argument to 'false' makes it only run if it has never run before. Setting it to 'true'
         //causes it to run every time the app is opened
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
-        Toast toast = Toast.makeText(this, "MainActivity", Toast.LENGTH_SHORT);
-        toast.show();
+        /*Toast toast = Toast.makeText(this, "MainActivity", Toast.LENGTH_SHORT);
+        toast.show();*/
     }
 
     @Override

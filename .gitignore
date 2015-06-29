@@ -17,11 +17,15 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-#Temp folders
 build
 \build
+\build\
 app\build
+app\build\
 \app\build
+.gradle
+\app\.gradle
+\app\.gradle\
 
 # =========================
 # Operating System Files

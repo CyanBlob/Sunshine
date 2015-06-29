@@ -61,8 +61,8 @@ public class DetailActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-        Toast toast = Toast.makeText(this, "DetailActivity", Toast.LENGTH_SHORT);
-        toast.show();
+        /*Toast toast = Toast.makeText(this, "DetailActivity", Toast.LENGTH_SHORT);
+        toast.show();*/
     }
 
     public void showMap(Uri geoLocation) {
@@ -114,7 +114,7 @@ public class DetailActivity extends ActionBarActivity {
 
         intent2.putExtra(android.content.Intent.EXTRA_SUBJECT, "My current weather!");
         intent2.putExtra(android.content.Intent.EXTRA_TEXT, forecastStr + " #Sunshine App");
-        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
 
 
         //startActivity(intent2);
@@ -159,8 +159,8 @@ public class DetailActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             if(intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
                 forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                Toast toast = Toast.makeText(this.getActivity(), "Intent Toast: " + forecastStr, Toast.LENGTH_SHORT);
-                toast.show();
+                /*Toast toast = Toast.makeText(this.getActivity(), "Intent Toast: " + forecastStr, Toast.LENGTH_SHORT);
+                toast.show();*/
                 ((TextView) rootView.findViewById(R.id.detail_text)).setText(forecastStr);
             }
 

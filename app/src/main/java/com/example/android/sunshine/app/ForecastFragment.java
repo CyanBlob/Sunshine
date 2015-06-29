@@ -158,8 +158,8 @@ public class ForecastFragment extends Fragment {
                 //Toast toast = Toast.makeText(context, text, duration);
 
                 String forecast = mForecastAdapter.getItem(position);
-                Toast toast = Toast.makeText(getActivity(), parent.getAdapter().getItem(position).toString(), Toast.LENGTH_SHORT);
-                toast.show();
+                /*Toast toast = Toast.makeText(getActivity(), parent.getAdapter().getItem(position).toString(), Toast.LENGTH_SHORT);
+                toast.show();*/
 
                 //Create a new intent, opening the DetailActivity page, and passing it EXTRA_TEXT, which == forecast
                 Intent intent = new Intent(getActivity(), DetailActivity.class).putExtra(Intent.EXTRA_TEXT, forecast);
