@@ -27,10 +27,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v4.content.CursorLoader;
+
 
 public class MainActivity extends ActionBarActivity {
 
-    String LOG_TAG = ForecastFragment.FetchWeatherTask.class.getSimpleName();
+    String LOG_TAG = this.getClass().getSimpleName();
+
+    private final String FORECASTFRAGMENT_TAG = "FFTAG";
+
+    private String mLocation;
     //ShareActionProvider mShareActionProvider;
 
     @Override
@@ -50,13 +59,13 @@ public class MainActivity extends ActionBarActivity {
             this.setTheme(android.R.style.Theme_DeviceDefault_NoActionBar);
         }*/
 
-
+        mLocation = Utility.getPreferredLocation(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
 
@@ -129,7 +138,7 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Log.v(ForecastFragment.FetchWeatherTask.class.getSimpleName(), "Settings button pressed");
+            Log.v(this.getClass().getSimpleName(), "Settings button pressed");
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
 
@@ -140,7 +149,8 @@ public class MainActivity extends ActionBarActivity {
             //TODO URI: http://maps.googleapis.com/maps/api/geocode/json?components=postal_code:23456&sensor=false
             SharedPreferences sharedPrefs =
                     PreferenceManager.getDefaultSharedPreferences((this));
-            String zip = sharedPrefs.getString(getString(R.string.pref_location_key), "");
+            //String zip = sharedPrefs.getString(getString(R.string.pref_location_key), "");
+            String zip = Utility.getPreferredLocation(this);
             Log.v(LOG_TAG, "Map button pressed");
             //openPreferredLocationInMap(zip);
 
@@ -340,6 +350,20 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        String location = Utility.getPreferredLocation( this );
+        // update the location in our second pane using the fragment manager
+        if (location != null && !location.equals(mLocation)) {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+            if ( null != ff ) {
+                ff.onLocationChanged();
+            }
+            mLocation = location;
+        }
+    }
+
+    @Override
     protected void onPause()
     {
         Log.v(LOG_TAG,"onPause()");
@@ -350,12 +374,6 @@ public class MainActivity extends ActionBarActivity {
     {
         Log.v(LOG_TAG,"onStop()");
         super.onStop();
-    }
-    @Override
-    protected void onResume()
-    {
-        Log.v(LOG_TAG,"onResume()");
-        super.onResume();
     }
     @Override
     protected void onStart()
