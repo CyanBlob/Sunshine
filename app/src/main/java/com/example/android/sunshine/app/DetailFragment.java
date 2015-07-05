@@ -22,6 +22,8 @@ import com.example.android.sunshine.app.R;
 import com.example.android.sunshine.app.Utility;
 import com.example.android.sunshine.app.data.WeatherContract;
 
+import org.w3c.dom.Text;
+
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
@@ -39,6 +41,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
             WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
             WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
+            WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
+            WeatherContract.WeatherEntry.COLUMN_DEGREES,
+            WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
     };
 
     // these constants correspond to the projection defined above, and must change if the
@@ -48,6 +53,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private static final int COL_WEATHER_DESC = 2;
     private static final int COL_WEATHER_MAX_TEMP = 3;
     private static final int COL_WEATHER_MIN_TEMP = 4;
+    private static final int COL_WIND_SPEED = 5;
+    private static final int COL_DEGREES = 6;
+    private static final int COL_HUMIDITY = 7;
 
     public DetailFragment() {
         setHasOptionsMenu(true);
@@ -116,7 +124,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (!data.moveToFirst()) { return; }
 
 
-        String dayString = Utility.getWeekdayString(getActivity(),data.getLong(COL_WEATHER_DATE));
+        String dayString = Utility.getWeekdayString(getActivity(), data.getLong(COL_WEATHER_DATE));
         TextView dayView = (TextView) getView().findViewById(R.id.list_item_day_textview);
         dayView.setText(dayString);
 
@@ -142,6 +150,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
         TextView lowTextView = (TextView) getView().findViewById(R.id.list_item_low_textview);
         lowTextView.setText(low);
+
+
+        String windSpeed = Utility.getFormattedWind(getActivity(),data.getFloat(COL_WIND_SPEED),data.getFloat(COL_DEGREES));
+        TextView windView = (TextView) getView().findViewById((R.id.list_item_wind_textview));
+        windView.setText(windSpeed);
+
+        Double humidity = data.getDouble(COL_HUMIDITY);
+        TextView humidityView = (TextView) getView().findViewById(R.id.list_item_humidity_textview);
+        humidityView.setText(getString(R.string.format_humidity, humidity));
 
         mForecast = String.format("%s - %s - %s/%s", dateString, weatherDescription, high, low);
 
